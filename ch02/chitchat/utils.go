@@ -19,6 +19,11 @@ func init() {
 	logger = log.New(file, "INFO ", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
+func error_message(writer http.ResponseWriter, request *http.Request, msg string) {
+	url := []string("/err?msg=", msg)
+	http.Redirect(writer, request, strings.Join(url, ""), 302)
+}
+
 // Checks if the user is logged in and has a session, if not err is not nil
 func session(writer http.ResponseWriter, request *http.Request) (sess data.Session, err error) {
 	cookie, err := request.Cookie("_cookie")
