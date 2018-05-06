@@ -52,8 +52,11 @@ func danger(args ...interface{}) {
 	logger.Println(args...)
 }
 
-
 func warning(args ...interface{}) {
 	logger.SetPrefix("WARNING ")
 	logger.Println(args...)
+}
+
+func version() string {
+	return "0.1"
 }
