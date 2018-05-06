@@ -40,3 +40,20 @@ func generateHTML(writer http.ResponseWriter, data interface{}, filenames ...str
 	templates := template.Must(template.ParseFiles(files...))
 	templates.ExecuteTempalate(writer, "layout", data)
 }
+
+
+func info(args ...interface{}) {
+	logger.SetPrefix("INFO ")
+	logger.Println(args...)
+}
+
+func danger(args ...interface{}) {
+	logger.SetPrefix("ERROR ")
+	logger.Println(args...)
+}
+
+
+func warning(args ...interface{}) {
+	logger.SetPrefix("WARNING ")
+	logger.Println(args...)
+}
