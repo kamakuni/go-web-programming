@@ -9,6 +9,13 @@ import (
 	"log"
 )
 
+type Configuration struct {
+	Address	string
+	ReadTimeout	int64
+	WriteTimeout	int64
+	Static	string
+}
+
 var logger *log.Logger
 
 func init() {
