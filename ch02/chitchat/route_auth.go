@@ -4,7 +4,14 @@ import (
 	"net/http"
 )
 
-// POST
+// GET /login
+// Show the login page
+func login(w http.ResponseWriter, r *http.Request) {
+	t := parseTemplateFiles("login.layout", "public.navbar", "login")
+	t.Execute(w, nil)
+}
+
+// POST /authenticate
 // Authenticate the user given gmail and password
 func authenticate(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
