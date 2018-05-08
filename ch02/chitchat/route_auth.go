@@ -4,11 +4,19 @@ import (
 	"net/http"
 )
 
+// POST
+// Authenticate the user given gmail and password
 func authenticate(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	user, _ := data.UserByEmail(r.PostFormValue("emal"))
+	user, err := data.UserByEmail(r.PostFormValue("emal"))
+	if err != nil {
+		danger(err, "Cannnot find user")
+	}
 	if user.Password == data.Encrypt(r.PostFormValue("password")) {
-		session := user.CreateSession()
+		session, err := user.CreateSession()
+		if err != nil {
+			danger(err, "Cannot create session")
+		}
 		cookie := http.Cookie{
 			Name:     "_cookie",
 			Value:    session.Uuid,
