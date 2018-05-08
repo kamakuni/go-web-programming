@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/kamakuni/go-web-programming/ch02/chitchat/data"
 	"net/http"
 )
 
@@ -40,4 +41,14 @@ func authenticate(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Redirect(w, r, "/login", 302)
 	}
+}
+
+func logout(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("_cookie")
+	if err != http.ErrNoCookie {
+		warning(err, "failed to get cookie")
+		session := data.Session{Uuid: cookie.Value}
+		session.DeleteByUUID()
+	}
+	http.Redirect(w, r, "/", 302)
 }
