@@ -33,6 +33,14 @@ func (user *User) CreateSession() (session Session, err error) {
 	return
 }
 
+// Get the session for an existing user
+func (u *User) Session() (session Session, err error) {
+	session = Session{}
+	err = Db.QueryRow("SELECT id, uuid, email, user_id, created_at FROM sessions WHERE user_id = $1", u.Id).
+		Scan(&session.Id, &session.Uuid, &session.Email, &session.UserId, &session.CreatedAt)
+	return
+}
+
 // Check if session is valid in the database
 func (session *Session) Check() (valid bool, err error) {
 	err = Db.QueryRow("SELECT id, uuid, email, user_id, created_at FROM sessions WHERE user_id = $1", session.Uuid).Scan(&session.Id, &session.Uuid, &session.Email, &session.UserId, &session.CreatedAt)
