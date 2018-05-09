@@ -18,6 +18,24 @@ func signup(w http.ResponseWriter, r *http.Request) {
 	generateHTML(w, nil, "login.layout", "public.navbar", "signup")
 }
 
+// POST /signupAccount
+// Create the user account
+func signupAccount(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		danger(err, "Cannot parse form")
+	}
+	user := data.User{
+		Name:     r.ParseFormValue("name"),
+		Email:    r.ParseFormValue("email"),
+		Password: r.PostFormValue("password"),
+	}
+	if err := user.Create(); err != nil {
+		danger(err, "Cannot create user")
+	}
+	http.Redirect(w, r, "/login", 302)
+}
+
 // POST /authenticate
 // Authenticate the user given gmail and password
 func authenticate(w http.ResponseWriter, r *http.Request) {
