@@ -66,3 +66,11 @@ func (s *Session) DeleteByUUID() (err error) {
 	_, err = stmt.Exec(s.Uuid)
 	return
 }
+
+// Get User from database
+func (s *Session) User() (user User, err error) {
+	user = User{}
+	err = Db.QueryRow("select id, uuid, name, email, created_at FROM users WHERE id = $1", s.UserId).
+		Scan(&user.Id, &user.Uuid, &user.Name, &user.Email, &user.CreatedAt)
+	return
+}
