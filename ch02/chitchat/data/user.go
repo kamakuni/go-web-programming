@@ -74,3 +74,16 @@ func (s *Session) User() (user User, err error) {
 		Scan(&user.Id, &user.Uuid, &user.Name, &user.Email, &user.CreatedAt)
 	return
 }
+
+// Create a new user, save user info into he database
+func (u *User) Create() (err error) {
+	statement := "inser into users (uuid, name, email, password, created_at) values ($1, $2, $3, $4, $5) returning id, uuid,created_at"
+	stmt, err := Db.Prepare(statement)
+	if err != nil {
+		return
+	}
+	defer stmt.Close()
+
+	stmt.QueryRow(createUUID(), u.Name, u.Email, Encrypt(u.Password), time.Now()).Scan(&u.Id, &u.Uuid, &u.CreatedAt)
+	return
+}
